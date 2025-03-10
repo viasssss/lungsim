@@ -6,16 +6,16 @@ contains
 
 !!!###################################################################################
 
-  subroutine evaluate_vent_c() bind(C, name="evaluate_vent_c")
+  function evaluate_vent_c() bind(C, name="evaluate_vent_c") result(res)
 
     use arrays,only: dp
     use ventilation, only: evaluate_vent
     implicit none
+    real(dp) :: res
 
+    res = evaluate_vent()
 
-    call evaluate_vent()
-
-  end subroutine evaluate_vent_c
+  end function evaluate_vent_c
 
 
   !###################################################################################

@@ -1,23 +1,22 @@
-
 #include "ventilation.h"
 
 
-void evaluate_vent_c();
+double evaluate_vent_c();
 void evaluate_uniform_flow_c();
 void two_unit_test_c();
 
 
 
 
-void evaluate_vent()
+double evaluate_vent()
 {
-evaluate_vent_c();
+  return evaluate_vent_c();
 }
 
 void evaluate_uniform_flow()
 {
  evaluate_uniform_flow_c();
-  }
+}
 
 void two_unit_test()
 {

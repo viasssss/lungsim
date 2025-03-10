@@ -41,14 +41,11 @@ contains
 
 !!!#############################################################################
 
-  subroutine evaluate_vent()
+  function evaluate_vent() result(result)
     !*evaluate_vent:* Sets up and solves dynamic ventilation model
       use arrays, only: dp
       implicit none
-
-
-
-
+      real(dp) :: result
 
     ! Local variables
     integer :: gdirn                  ! 1(x), 2(y), 3(z); upright lung (for our
@@ -197,8 +194,8 @@ contains
 
     enddo !...WHILE(CONTINUE)
 
-    call write_end_of_breath(init_vol,current_vol,pmus_factor_in,pmus_step, &
-         sum_expid,sum_tidal,volume_target,WOBe_insp,WOBr_insp,WOB_insp)
+   !  call write_end_of_breath(init_vol,current_vol,pmus_factor_in,pmus_step, &
+   !       sum_expid,sum_tidal,volume_target,WOBe_insp,WOBr_insp,WOB_insp)
 
 !!! Transfer the tidal volume for each elastic unit to the terminal branches,
 !!! and sum up the tree. Divide by inlet flow. This gives the time-averaged and
@@ -215,9 +212,10 @@ contains
 !    call export_terminal_solution(TERMINAL_EXNODEFILE,'terminals')
       !write(*,'('' Total Work of Breathing ='',F7.3,''J/min'')')WOB_insp
       !result = WOB_insp
+    result = WOB_insp
     call enter_exit(sub_name,2)
 
-  end subroutine evaluate_vent
+  end function evaluate_vent
 
 !!!#############################################################################
 
