@@ -307,7 +307,7 @@ contains
 !*define_rad_from_geom:* Defines vessel or airway radius based on their geometric structure
   subroutine define_rad_from_geom_c(order_system, order_system_len, control_param, &
         start_from, start_from_len, start_rad, group_type, group_type_len, group_options, group_options_len, &
-         modify_indices, modify_indices_len) &
+         modify_indices, modify_indices_len, deviation) &
         bind(C, name="define_rad_from_geom_c")
 
     use iso_c_binding, only: c_ptr, c_null_ptr, c_f_pointer, c_loc, c_int
@@ -317,7 +317,7 @@ contains
     use geometry, only: define_rad_from_geom
     implicit none
 
-    real(dp),intent(in) :: control_param, start_rad
+    real(dp),intent(in) :: control_param, start_rad, deviation
     integer,intent(in) :: order_system_len, start_from_len, group_type_len, group_options_len, modify_indices_len
     type(c_ptr), value, intent(in) :: order_system, start_from, group_type, group_options
     integer, intent(in) :: modify_indices(*)
@@ -336,8 +336,7 @@ contains
       allocate(modify_indices_f(0))
     endif
 
-    call define_rad_from_geom(order_system_f, control_param, start_from_f, start_rad, &
-                             group_type_f, group_options_f, modify_indices_f)
+  call define_rad_from_geom(order_system_f, control_param, start_from_f, start_rad, group_type_f, group_options_f, modify_indices_f, deviation)
 
     if (allocated(modify_indices_f)) deallocate(modify_indices_f)
 

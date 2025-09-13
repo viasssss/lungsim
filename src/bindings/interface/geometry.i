@@ -60,6 +60,6 @@ void write_elem_geometry_2d(const char *ELEMFILE);
 void write_geo_file(int ntype, const char *GEOFILE);
 void write_node_geometry_2d(const char *NODEFILE);
 void define_rad_from_file(const char *FIELDFILE, const char *radius_type="no_taper");
-void define_rad_from_geom(const char *ORDER_SYSTEM, double CONTROL_PARAM, const char *START_FROM, double START_RAD, const char *group_type="all", const char *group_option="", int modify_indices[] = NULL, int modify_indices_len = 0);
+void define_rad_from_geom(const char *ORDER_SYSTEM, double CONTROL_PARAM, const char *START_FROM, double START_RAD, const char *group_type="all", const char *group_option="", int modify_indices[] = NULL, int modify_indices_len = 0, double deviation = 1.0);
 
 %include geometry.h

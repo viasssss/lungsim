@@ -3234,7 +3234,7 @@ contains
 !!!#############################################################################
 
   subroutine define_rad_from_geom(ORDER_SYSTEM, CONTROL_PARAM, START_FROM, &
-       USER_RAD, group_type_in, group_option_in, modify_indices)
+       USER_RAD, group_type_in, group_option_in, modify_indices, deviation)
     !*define_rad_from_geom:* Defines vessel or airway radius based on
     ! their geometric structure. For 'order_system' == 'strah' or 'horsf', uses a
     ! user-defined maximum radius and branching ratio; for == 'fit', uses pre-
@@ -3255,6 +3255,7 @@ contains
     logical :: found
     character(LEN=100) :: group_type
     character(len=60) :: sub_name
+    real(dp), optional, intent(in) :: deviation
 
     ! --------------------------------------------------------------------------
 
@@ -3354,12 +3355,17 @@ contains
         do i = 1, SIZE(modify_indices)
             ne = modify_indices(i)
             if (ne >= ne_min .and. ne <= ne_max) then
-                elem_field(ne_radius, ne) = 1.1_dp * elem_field(ne_radius, ne)
+                elem_field(ne_radius, ne) = 1.1_dp * deviation * elem_field(ne_radius, ne)
             else
                 print *, "Warning: Airway index ", ne, " is out of range and will be skipped."
             endif
         end do
     endif
+
+!    do ne=ne_min,ne_max
+!        elem_field(ne_radius,ne) = elem_field(ne_radius,ne)*
+!    enddo
+
 
     call enter_exit(sub_name,2)
 
