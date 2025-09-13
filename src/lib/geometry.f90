@@ -3362,9 +3362,7 @@ contains
         end do
     endif
 
-!    do ne=ne_min,ne_max
-!        elem_field(ne_radius,ne) = elem_field(ne_radius,ne)*
-!    enddo
+    
 
 
     call enter_exit(sub_name,2)

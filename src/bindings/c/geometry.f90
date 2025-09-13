@@ -336,7 +336,8 @@ contains
       allocate(modify_indices_f(0))
     endif
 
-  call define_rad_from_geom(order_system_f, control_param, start_from_f, start_rad, group_type_f, group_options_f, modify_indices_f, deviation)
+  call define_rad_from_geom(order_system_f, control_param, start_from_f, start_rad, &
+    group_type_f, group_options_f, modify_indices_f, deviation)
 
     if (allocated(modify_indices_f)) deallocate(modify_indices_f)
 
