@@ -89,6 +89,14 @@ endif ()
 add_custom_target(cbindings ALL)
 add_dependencies(cbindings aether_c)
 
+# Standalone executable replicating ventilation_Swan2011.py behaviour using C bindings.
+add_executable(ventilation_swan2011 ventilation_swan2011.c)
+target_link_libraries(ventilation_swan2011 PRIVATE aether_c)
+set_target_properties(ventilation_swan2011 PROPERTIES FOLDER bindings/c)
+
+install(TARGETS ventilation_swan2011
+  RUNTIME DESTINATION bin)
+
 install(TARGETS aether_c aether_c_fortran
   RUNTIME DESTINATION bin
   LIBRARY DESTINATION lib
