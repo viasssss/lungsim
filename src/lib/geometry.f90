@@ -3259,7 +3259,7 @@ contains
     integer, intent(in) :: seed
     integer :: n_seed_size = 1
     integer, allocatable :: seeds(:)
-    real(dp) :: rand_val
+    real(dp) :: u1, u2, rand_val
 
     ! --------------------------------------------------------------------------
 
@@ -3376,12 +3376,14 @@ contains
    
    do ne = ne_min, ne_max
       ! Generate normally distributed random number using Box-Muller transform
-      call random_number(rand_val)
-      if (rand_val < 1.0e-10_dp) rand_val = 1.0e-10_dp ! avoid log(0)
-      rand_val = sqrt(-2.0_dp * log(rand_val))
-      call random_number(rand_val)
-      rand_val = rand_val * cos(2.0_dp * pi * rand_val)
-      ! Apply normal distribution with mean=1.0 and std dev from deviation (default 0.05)
+      call random_number(u1)
+      if (u1 < 1.0e-10_dp) u1 = 1.0e-10_dp ! avoid log(0)
+      call random_number(u2)
+      
+      ! Box-Muller transform: Z = sqrt(-2*ln(U1)) * cos(2*pi*U2)
+      rand_val = sqrt(-2.0_dp * log(u1)) * cos(2.0_dp * pi * u2)
+      
+      ! Apply normal distribution with mean=1.0 and std dev from deviation parameter
       rand_val = 1.0_dp + rand_val * 0.05_dp
       
       elem_field(ne_radius, ne) = elem_field(ne_radius, ne) * rand_val

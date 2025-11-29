@@ -176,9 +176,11 @@ int main(int argc, char *argv[]) {
 
     /* Change into example directory (to access Parameters/ files) similar to Python script behaviour */
     char cwd[PATH_MAX];
-    if (!getcwd(cwd, sizeof(cwd))) {
+    int cwd_ok = 0;
+    if (getcwd(cwd, sizeof(cwd)) != NULL) {
+        cwd_ok = 1;
+    } else {
         fprintf(stderr, "Warning: getcwd failed; continuing.\n");
-        cwd[0] = '\0';
     }
     const char *env_example_dir = getenv("AETHER_EXAMPLE_DIR");
     const char *example_candidates[] = {
@@ -203,11 +205,15 @@ int main(int argc, char *argv[]) {
     double result = evaluate_vent();
 
     /* Restore working directory */
-    if (changed_dir && cwd[0] != '\0') {
-        chdir(cwd);
+    if (changed_dir && cwd_ok) {
+        if (chdir(cwd) != 0) {
+            fprintf(stderr, "Warning: Failed to restore working directory to %s\n", cwd);
+        }
     }
 
-    printf("%f\n", result);
+    /* Print result with high precision to match Python output */
+    // fprintf(stderr, "Debug: evaluate_vent returned: %.17g\n", result);
+    printf("%.17g\n", result);
 
     free(airway_indices);
     return 0;
