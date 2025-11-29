@@ -3384,7 +3384,9 @@ contains
       rand_val = sqrt(-2.0_dp * log(u1)) * cos(2.0_dp * pi * u2)
       
       ! Apply normal distribution with mean=1.0 and std dev from deviation parameter
-      rand_val = 1.0_dp + rand_val * 0.0_dp
+      rand_val = 1.0_dp + rand_val * 0.1_dp
+      if(rand_val < 0) rand_val = -rand_val
+      if(rand_val == 0) rand_val = 1
       
       elem_field(ne_radius, ne) = elem_field(ne_radius, ne) * rand_val
       if(ne_vol.gt.0)then
