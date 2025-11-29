@@ -22,7 +22,7 @@ int get_local_node_f_c(const char *ndimension, int *dimension_len, const char *n
 void define_rad_from_geom_c(const char *order_system, int *order_system_len, double *control_param,
                             const char *start_from, int *start_from_len, double *start_rad,
                             const char *group_type, int *group_type_len, const char *group_options, int *group_options_len,
-                            int modify_indices[], int *modify_indices_len, double *deviation);
+                            int modify_indices[], int *modify_indices_len, double *deviation, int *seed);
 void element_connectivity_1d_c(void);
 void evaluate_ordering_c(void);
 void volume_of_mesh_c(double *volume_model, double *volume_tree);
@@ -131,7 +131,7 @@ int get_local_node_f(const char *ndimension, const char *np_global)
 
 void define_rad_from_geom(const char *order_system, double control_param, const char *start_from,
                           double start_rad, const char *group_type, const char *group_options,
-                          int modify_indices[], int modify_indices_len, double deviation)
+                          int modify_indices[], int modify_indices_len, double deviation, int seed)
 {
   int order_system_len = (int)strlen(order_system);
   int start_from_len = (int)strlen(start_from);
@@ -139,7 +139,7 @@ void define_rad_from_geom(const char *order_system, double control_param, const 
   int group_options_len = (int)strlen(group_options);
   define_rad_from_geom_c(order_system, &order_system_len, &control_param, start_from, &start_from_len, &start_rad,
                          group_type, &group_type_len, group_options, &group_options_len,
-                         modify_indices, &modify_indices_len, &deviation);
+                         modify_indices, &modify_indices_len, &deviation, &seed);
 }
 
 void element_connectivity_1d()

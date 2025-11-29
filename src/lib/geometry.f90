@@ -3234,7 +3234,7 @@ contains
 !!!#############################################################################
 
   subroutine define_rad_from_geom(ORDER_SYSTEM, CONTROL_PARAM, START_FROM, &
-       USER_RAD, group_type_in, group_option_in, modify_indices, deviation)
+       USER_RAD, group_type_in, group_option_in, modify_indices, deviation, seed)
     !*define_rad_from_geom:* Defines vessel or airway radius based on
     ! their geometric structure. For 'order_system' == 'strah' or 'horsf', uses a
     ! user-defined maximum radius and branching ratio; for == 'fit', uses pre-
@@ -3256,6 +3256,10 @@ contains
     character(LEN=100) :: group_type
     character(len=60) :: sub_name
     real(dp), optional, intent(in) :: deviation
+    integer, intent(in) :: seed
+    integer :: n_seed_size = 1
+    integer, allocatable :: seeds(:)
+    real(dp) :: rand_val
 
     ! --------------------------------------------------------------------------
 
@@ -3361,6 +3365,31 @@ contains
             endif
         end do
     endif
+
+
+   call random_seed(size=n_seed_size)
+   allocate(seeds(n_seed_size))
+   seeds(1) = seed
+   call random_seed(put=seeds)
+
+   
+   
+   do ne = ne_min, ne_max
+      ! Generate normally distributed random number using Box-Muller transform
+      call random_number(rand_val)
+      if (rand_val < 1.0e-10_dp) rand_val = 1.0e-10_dp ! avoid log(0)
+      rand_val = sqrt(-2.0_dp * log(rand_val))
+      call random_number(rand_val)
+      rand_val = rand_val * cos(2.0_dp * pi * rand_val)
+      ! Apply normal distribution with mean=1.0 and std dev from deviation (default 0.05)
+      rand_val = 1.0_dp + rand_val * 0.05_dp
+      
+      elem_field(ne_radius, ne) = elem_field(ne_radius, ne) * rand_val
+      if(ne_vol.gt.0)then
+         elem_field(ne_vol,ne) = pi*elem_field(ne_radius, ne)**2*elem_field(ne_length,ne)
+      endif
+   enddo
+   deallocate(seeds)
 
     
 
