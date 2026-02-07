@@ -135,6 +135,7 @@ int main(int argc, char *argv[]) {
         "../lung-group-examples/geometry",
         "../../lung-group-examples/geometry",
         "/Users/august/Documents/lung/lung-group-examples/geometry" /* absolute (current repo layout) */
+        "/Users/lji919/lung/lung-group-examples/geometry" /* absolute (current repo layout) */
     };
 
     int found = 0;
