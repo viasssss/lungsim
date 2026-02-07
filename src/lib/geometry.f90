@@ -3369,7 +3369,10 @@ contains
 
    call random_seed(size=n_seed_size)
    allocate(seeds(n_seed_size))
-   seeds(1) = seed
+   ! Initialize all seed elements to ensure reproducibility across architectures
+   do i = 1, n_seed_size
+      seeds(i) = seed + i - 1
+   end do
    call random_seed(put=seeds)
 
    
